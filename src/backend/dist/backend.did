@@ -1,0 +1,179 @@
+type ViewMode = 
+ variant {
+   FPP;
+   TPP;
+ };
+type UserView = 
+ record {
+   createdAt: Timestamp;
+   id: UserId;
+   matchesPlayed: nat;
+   totalEarnings: nat;
+   username: text;
+   wins: nat;
+ };
+type UserId = principal;
+type TransactionType = 
+ variant {
+   Credit;
+   Debit;
+ };
+type TransactionReason = 
+ variant {
+   EntryFee;
+   PrizeWin;
+   Refund;
+   Signup;
+ };
+type TransactionId = nat;
+type Transaction = 
+ record {
+   amount: nat;
+   id: TransactionId;
+   reason: TransactionReason;
+   timestamp: Timestamp;
+   tournamentId: opt TournamentId;
+   txType: TransactionType;
+   userId: UserId;
+ };
+type TournamentView = 
+ record {
+   contestType: ContestType;
+   currentParticipants: nat;
+   entryFee: nat;
+   game: Game;
+   id: TournamentId;
+   maxParticipants: nat;
+   prizePool: nat;
+   roomCode: opt text;
+   roomPassword: opt text;
+   startTime: Timestamp;
+   status: TournamentStatus;
+   teamMode: TeamMode;
+   title: text;
+   viewMode: ViewMode;
+ };
+type TournamentStatus = 
+ variant {
+   Cancelled;
+   Completed;
+   Live;
+   RoomCodePosted;
+   Upcoming;
+   WaitingResults;
+ };
+type TournamentId = nat;
+type Timestamp = int;
+type TeamMode = 
+ variant {
+   Duo;
+   Solo;
+   Squad;
+ };
+type ParticipantView = 
+ record {
+   status: ParticipantStatus;
+   teamName: opt text;
+   tournamentId: TournamentId;
+   userId: UserId;
+ };
+type ParticipantStatus = 
+ variant {
+   Completed;
+   Eliminated;
+   Joined;
+ };
+type MatchResult = 
+ record {
+   damage: nat;
+   earnings: nat;
+   kills: nat;
+   position: nat;
+   tournamentId: TournamentId;
+   userId: UserId;
+ };
+type Game = 
+ variant {
+   BGMI;
+   FreeFire;
+ };
+type CreateTournamentArgs = 
+ record {
+   contestType: ContestType;
+   entryFee: nat;
+   game: Game;
+   maxParticipants: nat;
+   prizePool: nat;
+   startTime: Timestamp;
+   teamMode: TeamMode;
+   title: text;
+   viewMode: ViewMode;
+ };
+type ContestType = 
+ variant {
+   Damage;
+   MostKills;
+   TopPosition;
+ };
+service : {
+  adminAdjustBalance: (userId: UserId, amount: nat, txType:
+   TransactionType) -> (variant {
+                          notAdmin;
+                          ok;
+                          userNotFound;
+                        });
+  adminCreateTournament: (args: CreateTournamentArgs) ->
+   (variant {
+      notAdmin;
+      ok: TournamentId;
+    });
+  adminPostRoomCode: (id: TournamentId, code: text, password: opt text) ->
+   (variant {
+      notAdmin;
+      notFound;
+      ok;
+    });
+  adminSubmitMatchResults: (tournamentId: TournamentId, results:
+   vec MatchResult) -> (variant {
+                          invalidStatus;
+                          notAdmin;
+                          notFound;
+                          ok;
+                        });
+  adminUpdateTournamentStatus: (id: TournamentId, status:
+   TournamentStatus) -> (variant {
+                           notAdmin;
+                           notFound;
+                           ok;
+                         });
+  claimAdmin: () -> (variant {
+                       alreadyClaimed;
+                       anonymous;
+                       ok;
+                     });
+  getMatchResults: (tournamentId: TournamentId) -> (vec MatchResult) query;
+  getMyBalance: () -> (nat) query;
+  getMyProfile: () -> (opt UserView) query;
+  getMyTransactions: () -> (vec Transaction) query;
+  getParticipants: (id: TournamentId) -> (vec ParticipantView) query;
+  getProfile: (userId: UserId) -> (opt UserView) query;
+  getTournament: (id: TournamentId) -> (opt TournamentView) query;
+  isRegistered: () -> (bool) query;
+  joinTournament: (tournamentId: TournamentId, teamName: opt text) ->
+   (variant {
+      alreadyJoined;
+      insufficientFunds;
+      notFound;
+      notJoinable;
+      notRegistered;
+      ok;
+      tournamentFull;
+    });
+  listTournaments: () -> (vec TournamentView) query;
+  listUsers: () -> (vec UserView) query;
+  register: (username: text) -> (variant {
+                                   alreadyRegistered;
+                                   anonymous;
+                                   ok;
+                                 });
+}

@@ -1,0 +1,29 @@
+{
+  "overview": "Clash Arena is a full-featured eSports tournament platform for mobile games like Free Fire and BGMI. Players can browse daily tournaments, join contests with entry fees, view room codes, track results on live leaderboards, and earn prizes through an internal wallet system. Admins manage tournaments, post room codes, and submit match results.",
+  "features": [
+    "User registration and login via Internet Identity",
+    "Tournament listings with card grid layout (game, team mode, entry fee, prize pool)",
+    "Solo, Duo, and Squad team modes",
+    "Contest types: Top Position, Most Kills, Damage-based",
+    "Daily contests with FPP/TPP game modes",
+    "Room code distribution to participants",
+    "Kill/position/damage result submission by admins",
+    "Internal wallet system with transaction history",
+    "Live leaderboards per contest",
+    "User profile with match history and earnings",
+    "Admin panel for tournament creation and management",
+    "Gaming-themed dark UI with neon orange/yellow accents"
+  ],
+  "category": "gaming",
+  "tags": [
+    "esports",
+    "tournament",
+    "gaming",
+    "free-fire",
+    "bgmi",
+    "leaderboard",
+    "wallet",
+    "competitive"
+  ],
+  "last_updated": "2026-04-28T14:24:40.256Z"
+}

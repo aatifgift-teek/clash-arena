@@ -1,0 +1,131 @@
+// Version: 1.0.0
+type ContestType__891377993 = {#Damage; #MostKills; #TopPosition};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Game__117537377 = {#BGMI; #FreeFire};
+type Int__270357528 = Int__616954475;
+type Int__616954475 = Int;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type MatchResult__823745417 =
+  {
+    damage : Nat;
+    earnings : Nat;
+    kills : Nat;
+    position : Nat;
+    tournamentId : TournamentId__389260004;
+    userId : UserId__158757552
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type ParticipantStatus__320833582 = {#Completed; #Eliminated; #Joined};
+type Participant__462798115 =
+  {
+    var status : ParticipantStatus__320833582;
+    teamName : ?Text;
+    tournamentId : TournamentId__389260004;
+    userId : UserId__158757552
+  };
+type TeamMode__118763479 = {#Duo; #Solo; #Squad};
+type Time__796480547 = Int__270357528;
+type Time__900049286 = Time__796480547;
+type Timestamp__301639476 = Time__900049286;
+type TournamentId__389260004 = Nat;
+type TournamentStatus__706565958 =
+  {
+    #Cancelled;
+    #Completed;
+    #Live;
+    #RoomCodePosted;
+    #Upcoming;
+    #WaitingResults
+  };
+type Tournament__797188792 =
+  {
+    contestType : ContestType__891377993;
+    var currentParticipants : Nat;
+    entryFee : Nat;
+    game : Game__117537377;
+    id : TournamentId__389260004;
+    maxParticipants : Nat;
+    prizePool : Nat;
+    var roomCode : ?Text;
+    var roomPassword : ?Text;
+    startTime : Timestamp__301639476;
+    var status : TournamentStatus__706565958;
+    teamMode : TeamMode__118763479;
+    title : Text;
+    viewMode : ViewMode__534123750
+  };
+type TransactionId__138870153 = Nat;
+type TransactionReason__75093483 = {#EntryFee; #PrizeWin; #Refund; #Signup};
+type TransactionType__430720328 = {#Credit; #Debit};
+type Transaction__15087323 =
+  {
+    amount : Nat;
+    id : TransactionId__138870153;
+    reason : TransactionReason__75093483;
+    timestamp : Timestamp__301639476;
+    tournamentId : ?TournamentId__389260004;
+    txType : TransactionType__430720328;
+    userId : UserId__158757552
+  };
+type UserId__158757552 = Principal;
+type User__933515552 =
+  {
+    createdAt : Timestamp__301639476;
+    id : UserId__158757552;
+    var matchesPlayed : Nat;
+    var totalEarnings : Nat;
+    var username : Text;
+    var wins : Nat
+  };
+type ViewMode__534123750 = {#FPP; #TPP};
+actor {
+  stable admins :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?UserId__158757552]];
+      var elementIndex : Nat__490723111
+    };
+  stable matchResults :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?MatchResult__823745417]];
+      var elementIndex : Nat__490723111
+    };
+  stable participants :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Participant__462798115]];
+      var elementIndex : Nat__490723111
+    };
+  stable tournamentCounter : {var value : Nat};
+  stable tournaments :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Tournament__797188792]];
+      var elementIndex : Nat__490723111
+    };
+  stable transactions :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Transaction__15087323]];
+      var elementIndex : Nat__490723111
+    };
+  stable txCounter : {var value : Nat};
+  stable users :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?User__933515552]];
+      var elementIndex : Nat__490723111
+    };
+  stable wallets :
+    {
+      var root : Node__46230540<UserId__158757552, Nat>;
+      var size : Nat__490723111
+    }
+};
